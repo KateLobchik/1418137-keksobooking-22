@@ -1,5 +1,7 @@
 /* global L:readonly */
 
+import { createSimilarAd } from './create-similar-ad.js';
+
 const disableFormFields = (form, disabledClass) => {
   form.classList.add(disabledClass);
   for (let i = 0; i < form.children.length; i++) {
@@ -15,7 +17,6 @@ const activateFormFields = (form, disabledClass) => {
 }
 
 const adForm = document.querySelector('.ad-form');
-const adFormAdress = adForm.querySelector('#address');
 const mapFilter = document.querySelector('.map__filters');
 
 disableFormFields(adForm, 'ad-form--disabled');
@@ -32,13 +33,13 @@ const map = L.map('map-canvas')
     lng: 139.69171,
   }, 12);
 
+
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
-
 
 
 const mainPinIcon = L.icon({
@@ -62,12 +63,6 @@ const mainMarker = L.marker(
 );
 mainMarker.addTo(map);
 
-adFormAdress.setAttribute('readonly', 'readonly');
-adFormAdress.value = mainMarker.getLatLng().lat.toFixed(5) + ', ' + mainMarker.getLatLng().lng.toFixed(5);
-mainMarker.on('moveend', (evt) => {
-  adFormAdress.value = evt.target.getLatLng().lat.toFixed(5) + ', ' + evt.target.getLatLng().lng.toFixed(5);
-});
-
 
 const pinIcon = L.icon({
   iconUrl: 'img/pin.svg',
@@ -78,28 +73,27 @@ const pinIcon = L.icon({
   shadowAnchor: [8, 30],
 });
 
-import { createTemporaryData } from './create-temporary-data.js';
-import { createPopup } from './create-popup.js';
-const numberSimilarAds = 4;
-const similarAds = createTemporaryData(numberSimilarAds);
-
-similarAds.forEach(ad => {
-  const marker = L.marker(
-    {
-      lat: ad.location.x,
-      lng: ad.location.y,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
-
-  marker
-    .addTo(map)
-    .bindPopup(
-      createPopup(ad),
+const renderSimilarAd = (similarAds) => {
+  similarAds.forEach(ad => {
+    const marker = L.marker(
       {
-        keepInView: true,
+        lat: ad.location.lat,
+        lng: ad.location.lng,
+      },
+      {
+        icon: pinIcon,
       },
     );
-});
+
+    marker
+      .addTo(map)
+      .bindPopup(
+        createSimilarAd(ad),
+        {
+          keepInView: true,
+        },
+      );
+  });
+};
+
+export { renderSimilarAd, disableFormFields, mapFilter, mainMarker };

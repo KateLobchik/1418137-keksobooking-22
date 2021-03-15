@@ -45,7 +45,7 @@ const showImages = (photos, adElementTemplate) => {
   }
 };
 
-const createPopup = ad => {
+const createSimilarAd = ad => {
 
   const adElement = adTemplate.content.cloneNode(true);
 
@@ -66,10 +66,10 @@ const createPopup = ad => {
     adElement.querySelector(`.popup__feature--${item}`).style.display = 'inline-block';
   })
 
-  const popup = document.createElement('div');
-  popup.appendChild(adElement);
+  const similarAd = document.createElement('div');
+  similarAd.appendChild(adElement);
 
-  return popup.innerHTML;
+  return similarAd.innerHTML;
 };
 
-export { createPopup };
+export { createSimilarAd };

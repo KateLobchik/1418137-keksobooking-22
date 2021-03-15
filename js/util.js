@@ -15,4 +15,24 @@ const getRandomElemets = (array, min = 1) => {
   return newArray.slice(0, randomLength);
 };
 
-export { getRandomNumber, getRandomElemets };
+const showAlert = (placeClass, widthAlert, message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 100;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.width = widthAlert;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'lightblue';
+
+  alertContainer.textContent = message;
+
+  document.querySelector(placeClass).append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 5000);
+};
+
+
+export { getRandomNumber, getRandomElemets, showAlert };
