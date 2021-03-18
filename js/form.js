@@ -1,16 +1,14 @@
-const inputTypeHouse = document.querySelector('#type');
-const inputPrice = document.querySelector('#price');
-const inputTitle = document.querySelector('#title');
+import { mainMarker } from './map.js';
+import { returnFilter } from './filter.js';
 
-const formTime = document.querySelector('.ad-form__element--time');
+const adForm = document.querySelector('.ad-form');
+
+//Валидация полей (заголовок, тип жилья и цена, время)
+const inputTypeHouse = adForm.querySelector('#type');
+const inputPrice = adForm.querySelector('#price');
+const inputTitle = adForm.querySelector('#title');
+const formTime = adForm.querySelector('.ad-form__element--time');
 const inputsTime = formTime.querySelectorAll('select');
-
-const priceTypeHouse = {
-  bungalow: 0,
-  flat: 1000,
-  house: 5000,
-  palace: 10000,
-};
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -31,6 +29,14 @@ inputTitle.addEventListener('input', () => {
 
   inputTitle.reportValidity();
 })
+
+
+const priceTypeHouse = {
+  bungalow: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000,
+};
 
 inputTypeHouse.addEventListener('change', () => {
   inputPrice.placeholder = priceTypeHouse[inputTypeHouse.value];
@@ -53,9 +59,10 @@ for (let i = 0; i < inputsTime.length; i++) {
 }
 
 
+//Валидация количество комнат и гостей
 
-const inputRoomNumber = document.querySelector('#room_number');
-const inputCapacity = document.querySelector('#capacity');
+const inputRoomNumber = adForm.querySelector('#room_number');
+const inputCapacity = adForm.querySelector('#capacity');
 
 /*Можно при выборе количества комнат добавить блокировку недопустимых вариантов выбора количества гостей*/
 
@@ -124,3 +131,34 @@ inputCapacity.addEventListener('click', () => {
   }
 
 });
+
+
+
+//Зависимость значения поля с адресом и метки
+
+const buttonReset = document.querySelector('.ad-form__reset');
+const adFormAdress = adForm.querySelector('#address');
+adFormAdress.setAttribute('readonly', 'readonly');
+
+const startAdress = mainMarker.getLatLng();
+const startAdressField = `${startAdress.lat.toFixed(5)}, ${startAdress.lng.toFixed(5)}`;
+adFormAdress.value = startAdressField;
+
+mainMarker.on('moveend', (evt) => {
+  adFormAdress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+});
+
+const returnFormField = () => {
+  adForm.reset();
+  returnFilter();
+  adFormAdress.value = startAdressField;
+  mainMarker.setLatLng(startAdress);
+};
+
+buttonReset.addEventListener('click', evt => {
+  evt.preventDefault();
+  returnFormField();
+});
+
+
+export { adForm, returnFormField };

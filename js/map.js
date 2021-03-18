@@ -1,5 +1,7 @@
 /* global L:readonly */
 
+import { createSimilarAd } from './create-similar-ad.js';
+
 const disableFormFields = (form, disabledClass) => {
   form.classList.add(disabledClass);
   for (let i = 0; i < form.children.length; i++) {
@@ -15,7 +17,6 @@ const activateFormFields = (form, disabledClass) => {
 }
 
 const adForm = document.querySelector('.ad-form');
-const adFormAdress = adForm.querySelector('#address');
 const mapFilter = document.querySelector('.map__filters');
 
 disableFormFields(adForm, 'ad-form--disabled');
@@ -30,7 +31,8 @@ const map = L.map('map-canvas')
   .setView({
     lat: 35.6895,
     lng: 139.69171,
-  }, 12);
+  }, 10);
+
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -40,8 +42,7 @@ L.tileLayer(
 ).addTo(map);
 
 
-
-const mainPinIcon = L.icon({
+const mainIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
@@ -57,19 +58,13 @@ const mainMarker = L.marker(
   },
   {
     draggable: true,
-    icon: mainPinIcon,
+    icon: mainIcon,
   },
 );
 mainMarker.addTo(map);
 
-adFormAdress.setAttribute('readonly', 'readonly');
-adFormAdress.value = mainMarker.getLatLng().lat.toFixed(5) + ', ' + mainMarker.getLatLng().lng.toFixed(5);
-mainMarker.on('moveend', (evt) => {
-  adFormAdress.value = evt.target.getLatLng().lat.toFixed(5) + ', ' + evt.target.getLatLng().lng.toFixed(5);
-});
 
-
-const pinIcon = L.icon({
+const icon = L.icon({
   iconUrl: 'img/pin.svg',
   iconSize: [30, 30],
   iconAnchor: [15, 30],
@@ -78,28 +73,42 @@ const pinIcon = L.icon({
   shadowAnchor: [8, 30],
 });
 
-import { createTemporaryData } from './create-temporary-data.js';
-import { createPopup } from './create-popup.js';
-const numberSimilarAds = 4;
-const similarAds = createTemporaryData(numberSimilarAds);
 
-similarAds.forEach(ad => {
-  const marker = L.marker(
-    {
-      lat: ad.location.x,
-      lng: ad.location.y,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
 
-  marker
-    .addTo(map)
-    .bindPopup(
-      createPopup(ad),
+const allMarkers = [];
+
+const clearAllMarkers = () => {
+  allMarkers.forEach(marker => {
+    marker.remove();
+  })
+  allMarkers.length = 0;
+}
+
+const renderSimilarAd = (similarAds) => {
+  clearAllMarkers();
+  similarAds.forEach(ad => {
+    const marker = L.marker(
       {
-        keepInView: true,
+        lat: ad.location.lat,
+        lng: ad.location.lng,
+      },
+      {
+        icon: icon,
       },
     );
-});
+
+    marker
+      .addTo(map)
+      .bindPopup(
+        createSimilarAd(ad),
+        {
+          keepInView: true,
+        },
+      );
+
+    allMarkers.push(marker);
+  });
+};
+
+
+export { renderSimilarAd, disableFormFields, mapFilter, mainMarker };

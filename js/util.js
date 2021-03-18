@@ -15,4 +15,31 @@ const getRandomElemets = (array, min = 1) => {
   return newArray.slice(0, randomLength);
 };
 
-export { getRandomNumber, getRandomElemets };
+
+const nodeToHtml = (element) => {
+  const wrapper = document.createElement('div');
+  wrapper.appendChild(element);
+
+  return wrapper;
+};
+
+const htmlToNode = (element) => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = element;
+  return wrapper.firstChild;
+};
+
+const showAlert = (placeClass, widthAlert, message) => {
+  const alertMessage = `<div style = "z-index: 400; position: absolute; width: ${widthAlert};
+  padding: 10px 3px; font-size: 30px; text-align: center;
+  background-color: lightblue;">${message}</div>`;
+
+  const nodeAlertMessage = htmlToNode(alertMessage);
+  document.querySelector(placeClass).append(nodeAlertMessage);
+
+  setTimeout(() => {
+    nodeAlertMessage.remove();
+  }, 5000);
+};
+
+export { getRandomNumber, getRandomElemets, showAlert, nodeToHtml };

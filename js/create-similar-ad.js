@@ -1,3 +1,5 @@
+import { nodeToHtml } from './util.js';
+
 const adTemplate = document.querySelector('#card');
 
 const addDataInTemplate = (classTemplateElement, data, adElementTemplate) => {
@@ -45,7 +47,7 @@ const showImages = (photos, adElementTemplate) => {
   }
 };
 
-const createPopup = ad => {
+const createSimilarAd = ad => {
 
   const adElement = adTemplate.content.cloneNode(true);
 
@@ -61,15 +63,12 @@ const createPopup = ad => {
 
   adElement.querySelectorAll('.popup__feature').forEach((element) => {
     element.style.display = 'none';
-  })
-  ad.offer.features.forEach((item) => {
+  });
+  ad.offer.features.forEach(item => {
     adElement.querySelector(`.popup__feature--${item}`).style.display = 'inline-block';
   })
 
-  const popup = document.createElement('div');
-  popup.appendChild(adElement);
-
-  return popup.innerHTML;
+  return nodeToHtml(adElement);
 };
 
-export { createPopup };
+export { createSimilarAd };
