@@ -99,66 +99,24 @@ numberGuests.addEventListener('change', () => {
 });
 
 
-filterWiFi.addEventListener('change', () => {
-  if (filterWiFi.checked) {
-    filters.featureWiFi = ad => ad.offer.features.includes(filterWiFi.value);
+const checkboxFilter = (filterButton, feature) => {
+  filterButton.addEventListener('change', () => {
+    if (filterButton.checked) {
+      filters[feature] = ad => ad.offer[feature].includes(filterButton.value);
+    } else {
+      filters[feature] = () => true;
+    }
 
-  } else {
-    filters.featureWiFi = () => true;
-  }
+    doFilter();
+  });
+};
 
-  doFilter();
-});
-
-filterDishwasher.addEventListener('change', () => {
-  if (filterDishwasher.checked) {
-    filters.featureDishwasher = ad => ad.offer.features.includes(filterDishwasher.value);
-  } else {
-    filters.featureDishwasher = () => true;
-  }
-
-  doFilter();
-});
-
-filterParking.addEventListener('change', () => {
-  if (filterParking.checked) {
-    filters.featureParking = ad => ad.offer.features.includes(filterParking.value);
-  } else {
-    filters.featureParking = () => true;
-  }
-
-  doFilter();
-});
-
-filterWasher.addEventListener('change', () => {
-  if (filterWasher.checked) {
-    filters.featureWasher = ad => ad.offer.features.includes(filterWasher.value);
-  } else {
-    filters.featureWasher = () => true;
-  }
-
-  doFilter();
-});
-
-filterElevator.addEventListener('change', () => {
-  if (filterElevator.checked) {
-    filters.featureElevator = ad => ad.offer.features.includes(filterElevator.value);
-  } else {
-    filters.featureElevator = () => true;
-  }
-
-  doFilter();
-});
-
-filterConditioner.addEventListener('change', () => {
-  if (filterConditioner.checked) {
-    filters.featureConditioner = ad => ad.offer.features.includes(filterConditioner.value);
-  } else {
-    filters.featureConditioner = () => true;
-  }
-
-  doFilter();
-});
+checkboxFilter(filterWiFi, 'featureWiFi');
+checkboxFilter(filterDishwasher, 'featureDishwasher');
+checkboxFilter(filterParking, 'featureParking');
+checkboxFilter(filterWasher, 'featureWasher');
+checkboxFilter(filterElevator, 'featureElevator');
+checkboxFilter(filterConditioner, 'featureConditioner');
 
 
 const filterAds = (ads, renderFunction) => {
