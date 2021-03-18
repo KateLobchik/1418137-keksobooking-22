@@ -31,7 +31,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: 35.6895,
     lng: 139.69171,
-  }, 12);
+  }, 10);
 
 
 L.tileLayer(
@@ -42,7 +42,7 @@ L.tileLayer(
 ).addTo(map);
 
 
-const mainPinIcon = L.icon({
+const mainIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
@@ -58,13 +58,13 @@ const mainMarker = L.marker(
   },
   {
     draggable: true,
-    icon: mainPinIcon,
+    icon: mainIcon,
   },
 );
 mainMarker.addTo(map);
 
 
-const pinIcon = L.icon({
+const icon = L.icon({
   iconUrl: 'img/pin.svg',
   iconSize: [30, 30],
   iconAnchor: [15, 30],
@@ -73,7 +73,19 @@ const pinIcon = L.icon({
   shadowAnchor: [8, 30],
 });
 
+
+
+const allMarkers = [];
+
+const clearAllMarkers = () => {
+  allMarkers.forEach(marker => {
+    marker.remove();
+  })
+  allMarkers.length = 0;
+}
+
 const renderSimilarAd = (similarAds) => {
+  clearAllMarkers();
   similarAds.forEach(ad => {
     const marker = L.marker(
       {
@@ -81,7 +93,7 @@ const renderSimilarAd = (similarAds) => {
         lng: ad.location.lng,
       },
       {
-        icon: pinIcon,
+        icon: icon,
       },
     );
 
@@ -93,7 +105,10 @@ const renderSimilarAd = (similarAds) => {
           keepInView: true,
         },
       );
+
+    allMarkers.push(marker);
   });
 };
+
 
 export { renderSimilarAd, disableFormFields, mapFilter, mainMarker };

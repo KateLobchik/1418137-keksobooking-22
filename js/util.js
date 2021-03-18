@@ -15,24 +15,31 @@ const getRandomElemets = (array, min = 1) => {
   return newArray.slice(0, randomLength);
 };
 
+
+const nodeToHtml = (element) => {
+  const wrapper = document.createElement('div');
+  wrapper.appendChild(element);
+
+  return wrapper;
+};
+
+const htmlToNode = (element) => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = element;
+  return wrapper.firstChild;
+};
+
 const showAlert = (placeClass, widthAlert, message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.width = widthAlert;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'lightblue';
+  const alertMessage = `<div style = "z-index: 400; position: absolute; width: ${widthAlert};
+  padding: 10px 3px; font-size: 30px; text-align: center;
+  background-color: lightblue;">${message}</div>`;
 
-  alertContainer.textContent = message;
-
-  document.querySelector(placeClass).append(alertContainer);
+  const nodeAlertMessage = htmlToNode(alertMessage);
+  document.querySelector(placeClass).append(nodeAlertMessage);
 
   setTimeout(() => {
-    alertContainer.remove();
+    nodeAlertMessage.remove();
   }, 5000);
 };
 
-
-export { getRandomNumber, getRandomElemets, showAlert };
+export { getRandomNumber, getRandomElemets, showAlert, nodeToHtml };

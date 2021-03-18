@@ -1,4 +1,5 @@
 import { mainMarker } from './map.js';
+import { returnFilter } from './filter.js';
 
 const adForm = document.querySelector('.ad-form');
 
@@ -140,20 +141,21 @@ const adFormAdress = adForm.querySelector('#address');
 adFormAdress.setAttribute('readonly', 'readonly');
 
 const startAdress = mainMarker.getLatLng();
-const startAdressField = startAdress.lat.toFixed(5) + ', ' + startAdress.lng.toFixed(5);
+const startAdressField = `${startAdress.lat.toFixed(5)}, ${startAdress.lng.toFixed(5)}`;
 adFormAdress.value = startAdressField;
 
 mainMarker.on('moveend', (evt) => {
-  adFormAdress.value = evt.target.getLatLng().lat.toFixed(5) + ', ' + evt.target.getLatLng().lng.toFixed(5);
+  adFormAdress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
 const returnFormField = () => {
   adForm.reset();
+  returnFilter();
   adFormAdress.value = startAdressField;
   mainMarker.setLatLng(startAdress);
 };
 
-buttonReset.addEventListener('click', (evt) => {
+buttonReset.addEventListener('click', evt => {
   evt.preventDefault();
   returnFormField();
 });

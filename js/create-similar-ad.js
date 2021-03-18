@@ -1,3 +1,5 @@
+import { nodeToHtml } from './util.js';
+
 const adTemplate = document.querySelector('#card');
 
 const addDataInTemplate = (classTemplateElement, data, adElementTemplate) => {
@@ -61,15 +63,12 @@ const createSimilarAd = ad => {
 
   adElement.querySelectorAll('.popup__feature').forEach((element) => {
     element.style.display = 'none';
-  })
-  ad.offer.features.forEach((item) => {
+  });
+  ad.offer.features.forEach(item => {
     adElement.querySelector(`.popup__feature--${item}`).style.display = 'inline-block';
   })
 
-  const similarAd = document.createElement('div');
-  similarAd.appendChild(adElement);
-
-  return similarAd.innerHTML;
+  return nodeToHtml(adElement);
 };
 
 export { createSimilarAd };
