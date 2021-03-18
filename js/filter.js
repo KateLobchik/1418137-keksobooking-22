@@ -102,7 +102,7 @@ numberGuests.addEventListener('change', () => {
 const checkboxFilter = (filterButton, feature) => {
   filterButton.addEventListener('change', () => {
     if (filterButton.checked) {
-      filters[feature] = ad => ad.offer[feature].includes(filterButton.value);
+      filters[feature] = ad => ad.offer.features.includes(filterButton.value);
     } else {
       filters[feature] = () => true;
     }
