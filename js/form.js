@@ -1,5 +1,6 @@
 import { mainMarker } from './map.js';
 import { returnFilter } from './filter.js';
+import { returnImageForm } from './upload-images.js';
 
 const adForm = document.querySelector('.ad-form');
 
@@ -151,6 +152,7 @@ mainMarker.on('moveend', (evt) => {
 const returnFormField = () => {
   adForm.reset();
   returnFilter();
+  returnImageForm();
   adFormAdress.value = startAdressField;
   mainMarker.setLatLng(startAdress);
 };
