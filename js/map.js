@@ -86,6 +86,7 @@ const clearAllMarkers = () => {
 
 const renderSimilarAd = (similarAds) => {
   clearAllMarkers();
+
   similarAds.forEach(ad => {
     const marker = L.marker(
       {
