@@ -1,4 +1,4 @@
-import { returnFormField } from './form.js';
+import { resetFormField } from './form.js';
 import { nodeToHtml } from './util.js'
 
 const isEscEvent = (evt) => {
@@ -14,13 +14,13 @@ const messageOnSuccess = () => {
   document.addEventListener('keydown', evt => {
     if (isEscEvent(evt)) {
       evt.preventDefault();
-      returnFormField();
+      resetFormField();
       popapSuccess.classList.add('hidden');
     }
   });
 
   popapSuccess.addEventListener('click', () => {
-    returnFormField();
+    resetFormField();
     popapSuccess.classList.add('hidden');
   });
 }

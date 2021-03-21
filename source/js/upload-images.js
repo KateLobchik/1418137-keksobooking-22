@@ -35,12 +35,13 @@ const previewUploadImage = (fileChooser, preview, altImage) => {
   });
 };
 
-const returnImageForm = () => {
-  photoPreview.children[0].remove();
+const resetImageForm = () => {
+  photoPreview.innerHTML = '';
 }
+
 
 
 previewUploadImage(avatarChooser, avatarPreview);
 previewUploadImage(photoChooser, photoPreview, 'Фотография жилья');
 
-export { returnImageForm };
+export { resetImageForm };
