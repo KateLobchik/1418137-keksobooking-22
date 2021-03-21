@@ -1,5 +1,8 @@
 /* global _:readonly */
 
+const SIMILAR_AD_COUNT = 10;
+const RERENDER_DELAY = 500;
+
 const filterForm = document.querySelector('.map__filters');
 const typeHouse = filterForm.querySelector('#housing-type');
 const price = filterForm.querySelector('#housing-price');
@@ -14,11 +17,9 @@ const filterWasher = featuresFieldset.querySelector('#filter-washer');
 const filterElevator = featuresFieldset.querySelector('#filter-elevator');
 const filterConditioner = featuresFieldset.querySelector('#filter-conditioner');
 
-const SIMILAR_AD_COUNT = 10;
-const RERENDER_DELAY = 500;
 
-const debounceRender = clickOnButton => {
-  clickOnButton(_.debounce(
+const debounceRender = button => {
+  button(_.debounce(
     () => doFilter(),
     RERENDER_DELAY,
   ))
@@ -107,7 +108,7 @@ const doFilter = () => {
 };
 
 
-const clickTypeHouse = (functionRender) => {
+const onTypeHouseClick = (functionRender) => {
   typeHouse.addEventListener('change', () => {
     if (typeHouse.value === 'any') {
       filters.typeHouse = () => true;
@@ -118,9 +119,9 @@ const clickTypeHouse = (functionRender) => {
     functionRender();
   });
 }
-debounceRender(clickTypeHouse);
+debounceRender(onTypeHouseClick);
 
-const clickPrice = (functionRender) => {
+const onPriceClick = (functionRender) => {
   price.addEventListener('change', () => {
     switch (price.value) {
       case 'middle':
@@ -141,9 +142,9 @@ const clickPrice = (functionRender) => {
     functionRender();
   });
 }
-debounceRender(clickPrice);
+debounceRender(onPriceClick);
 
-const clickRooms = (functionRender) => {
+const onRoomsClick = (functionRender) => {
   numberRooms.addEventListener('change', () => {
     if (numberRooms.value === 'any') {
       filters.numberRooms = () => true;
@@ -154,9 +155,9 @@ const clickRooms = (functionRender) => {
     functionRender();
   });
 }
-debounceRender(clickRooms);
+debounceRender(onRoomsClick);
 
-const clickGuests = (functionRender) => {
+const onGuestsClick = (functionRender) => {
   numberGuests.addEventListener('change', () => {
     if (numberGuests.value === 'any') {
       filters.numberGuests = () => true;
@@ -167,9 +168,9 @@ const clickGuests = (functionRender) => {
     functionRender();
   });
 }
-debounceRender(clickGuests);
+debounceRender(onGuestsClick);
 
-const clickFeatures = (functionRender) => {
+const onFeaturesClick = (functionRender) => {
   const checkboxFilter = (filterButton, feature) => {
     filterButton.addEventListener('change', () => {
       if (filterButton.checked) {
@@ -189,7 +190,7 @@ const clickFeatures = (functionRender) => {
   checkboxFilter(filterElevator, 'featureElevator');
   checkboxFilter(filterConditioner, 'featureConditioner');
 };
-debounceRender(clickFeatures);
+debounceRender(onFeaturesClick);
 
 
 const filterAds = (ads, renderFunction) => {

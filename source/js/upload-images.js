@@ -36,7 +36,11 @@ const previewUploadImage = (fileChooser, preview, altImage) => {
 };
 
 const returnImageForm = () => {
-  photoPreview.children[0].remove();
+  for (let i = photoPreview.children.length - 1; i >= 0; i--) {
+    const photo = photoPreview.children[i];
+
+    photo.parentElement.removeChild(photo);
+  }
 }
 
 

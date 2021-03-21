@@ -2,17 +2,19 @@ import { mainMarker } from './map.js';
 import { returnFilter } from './filter.js';
 import { returnImageForm } from './upload-images.js';
 
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+
 const adForm = document.querySelector('.ad-form');
 
+
 //Валидация полей (заголовок, тип жилья и цена, время)
+
 const inputTypeHouse = adForm.querySelector('#type');
 const inputPrice = adForm.querySelector('#price');
 const inputTitle = adForm.querySelector('#title');
 const formTime = adForm.querySelector('.ad-form__element--time');
 const inputsTime = formTime.querySelectorAll('select');
-
-const MIN_TITLE_LENGTH = 30;
-const MAX_TITLE_LENGTH = 100;
 
 inputTitle.addEventListener('input', () => {
   inputTitle.min = MIN_TITLE_LENGTH;
@@ -64,39 +66,6 @@ for (let i = 0; i < inputsTime.length; i++) {
 
 const inputRoomNumber = adForm.querySelector('#room_number');
 const inputCapacity = adForm.querySelector('#capacity');
-
-/*Можно при выборе количества комнат добавить блокировку недопустимых вариантов выбора количества гостей*/
-
-// const inputRoomNumberFields = inputRoomNumber.querySelectorAll('option');
-// const inputCapacityFields = inputCapacity.querySelectorAll('option');
-
-// inputRoomNumber.addEventListener('click', () => {
-//   for (let i = 0; i < inputCapacityFields.length; i++) {
-//     inputCapacityFields[i].setAttribute('disabled', 'disabled');
-//   }
-//   if (inputRoomNumber.value < 100) {
-//     for (let i = inputCapacityFields.length - 2; i >= (inputCapacityFields.length - 1) - inputRoomNumber.value; i--) {
-//       inputCapacityFields[i].removeAttribute('disabled');
-//     }
-//   }
-//   if (inputRoomNumber.value >= 100) {
-//     inputCapacityFields[inputCapacityFields.length - 1].removeAttribute('disabled');
-//   }
-// });
-
-// inputCapacity.addEventListener('click', () => {
-//   for (let i = 0; i < inputCapacityFields.length; i++) {
-//     inputCapacityFields[i].setAttribute('disabled', 'disabled');
-//   }
-//   if (inputRoomNumber.value < 100) {
-//     for (let i = inputCapacityFields.length - 2; i >= (inputCapacityFields.length - 1) - inputRoomNumber.value; i--) {
-//       inputCapacityFields[i].removeAttribute('disabled');
-//     }
-//   }
-//   if (inputRoomNumber.value >= 100) {
-//     inputCapacityFields[inputCapacityFields.length - 1].removeAttribute('disabled');
-//   }
-// });
 
 inputRoomNumber.addEventListener('click', () => {
   const room = inputRoomNumber.value;
@@ -152,9 +121,9 @@ mainMarker.on('moveend', (evt) => {
 const returnFormField = () => {
   adForm.reset();
   returnFilter();
-  returnImageForm();
   adFormAdress.value = startAdressField;
   mainMarker.setLatLng(startAdress);
+  returnImageForm();
 };
 
 buttonReset.addEventListener('click', evt => {
