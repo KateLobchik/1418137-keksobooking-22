@@ -200,7 +200,7 @@ const filterAds = (ads, renderFunction) => {
 }
 
 
-const returnFilter = () => {
+const resetFilter = () => {
   filterForm.reset();
   for (let item in filters) {
     filters[item] = () => true;
@@ -209,4 +209,4 @@ const returnFilter = () => {
 }
 
 
-export { filterAds, returnFilter };
+export { filterAds, resetFilter };

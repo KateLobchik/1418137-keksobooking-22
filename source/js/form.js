@@ -1,6 +1,6 @@
 import { mainMarker } from './map.js';
-import { returnFilter } from './filter.js';
-import { returnImageForm } from './upload-images.js';
+import { resetFilter } from './filter.js';
+import { resetImageForm } from './upload-images.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -118,18 +118,18 @@ mainMarker.on('moveend', (evt) => {
   adFormAdress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-const returnFormField = () => {
+const resetFormField = () => {
   adForm.reset();
-  returnFilter();
+  resetFilter();
   adFormAdress.value = startAdressField;
   mainMarker.setLatLng(startAdress);
-  returnImageForm();
+  resetImageForm();
 };
 
 buttonReset.addEventListener('click', evt => {
   evt.preventDefault();
-  returnFormField();
+  resetFormField();
 });
 
 
-export { adForm, returnFormField };
+export { adForm, resetFormField };

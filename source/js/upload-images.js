@@ -35,7 +35,7 @@ const previewUploadImage = (fileChooser, preview, altImage) => {
   });
 };
 
-const returnImageForm = () => {
+const resetImageForm = () => {
   photoPreview.innerHTML = '';
 }
 
@@ -44,4 +44,4 @@ const returnImageForm = () => {
 previewUploadImage(avatarChooser, avatarPreview);
 previewUploadImage(photoChooser, photoPreview, 'Фотография жилья');
 
-export { returnImageForm };
+export { resetImageForm };
