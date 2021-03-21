@@ -1,51 +1,66 @@
 import { resetFormField } from './form.js';
-import { nodeToHtml } from './util.js'
 
 const isEscEvent = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
 const messageOnSuccess = () => {
-  const popapSuccessTemplate = document.querySelector('#success').content.cloneNode(true);
-  const popapSuccess = nodeToHtml(popapSuccessTemplate);
+  const popupSuccessTemplate = document.querySelector('#success').content.cloneNode(true);
+  const popupSuccess = document.createElement('div');
+  popupSuccess.appendChild(popupSuccessTemplate);
   const mainBlock = document.querySelector('main');
-  mainBlock.appendChild(popapSuccess);
+  mainBlock.appendChild(popupSuccess);
 
-  document.addEventListener('keydown', evt => {
+  const onPopupEscKeydown = (evt) => {
     if (isEscEvent(evt)) {
       evt.preventDefault();
-      resetFormField();
-      popapSuccess.classList.add('hidden');
+      closePopupSuccess();
     }
-  });
+  };
 
-  popapSuccess.addEventListener('click', () => {
+  const closePopupSuccess = () => {
     resetFormField();
-    popapSuccess.classList.add('hidden');
+    popupSuccess.classList.add('hidden');
+    document.removeEventListener('keydown', onPopupEscKeydown);
+  };
+
+
+  document.addEventListener('keydown', onPopupEscKeydown);
+
+  popupSuccess.addEventListener('click', () => {
+    closePopupSuccess();
   });
 }
 
 const messageOnFail = () => {
-  const popapErrorTemplate = document.querySelector('#error').content.cloneNode(true);
-  const popapError = nodeToHtml(popapErrorTemplate);
+  const popupErrorTemplate = document.querySelector('#error').content.cloneNode(true);
+  const popupError = document.createElement('div');
+  popupError.appendChild(popupErrorTemplate);
   const mainBlock = document.querySelector('main');
-  mainBlock.appendChild(popapError);
+  mainBlock.appendChild(popupError);
 
   const buttonError = document.querySelector('.error__button');
 
-  buttonError.addEventListener('click', () => {
-    popapError.classList.add('hidden');
-  });
-
-  document.addEventListener('keydown', evt => {
+  const onPopupEscKeydown = (evt) => {
     if (isEscEvent(evt)) {
       evt.preventDefault();
-      popapError.classList.add('hidden');
+      closePopupError();
     }
+  };
+
+  const closePopupError = () => {
+    popupError.classList.add('hidden');
+    document.removeEventListener('keydown', onPopupEscKeydown);
+  };
+
+  buttonError.addEventListener('click', () => {
+    closePopupError();
   });
 
-  popapError.addEventListener('click', () => {
-    popapError.classList.add('hidden');
+  document.addEventListener('keydown', onPopupEscKeydown);
+
+  popupError.addEventListener('click', () => {
+    closePopupError();
   });
 }
 

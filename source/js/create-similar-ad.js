@@ -1,5 +1,3 @@
-import { nodeToHtml } from './util.js';
-
 const adTemplate = document.querySelector('#card');
 
 const addDataInTemplate = (classTemplateElement, data, adElementTemplate) => {
@@ -68,7 +66,10 @@ const createSimilarAd = ad => {
     adElement.querySelector(`.popup__feature--${item}`).style.display = 'inline-block';
   })
 
-  return nodeToHtml(adElement);
+  const popup = document.createElement('div');
+  popup.appendChild(adElement);
+
+  return popup.innerHTML;
 };
 
 export { createSimilarAd };

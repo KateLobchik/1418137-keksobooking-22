@@ -53,13 +53,14 @@ inputPrice.addEventListener('input', () => {
   inputPrice.max = 1000000;
 });
 
-for (let i = 0; i < inputsTime.length; i++) {
-  inputsTime[i].addEventListener('click', () => {
-    inputsTime.forEach((section) => {
-      section.value = inputsTime[i].value;
-    })
-  });
-}
+inputsTime[0].addEventListener('click', () => {
+  inputsTime[1].value = inputsTime[0].value;
+});
+
+inputsTime[1].addEventListener('click', () => {
+  inputsTime[0].value = inputsTime[1].value;
+});
+
 
 
 //Валидация количество комнат и гостей
