@@ -36,12 +36,9 @@ const previewUploadImage = (fileChooser, preview, altImage) => {
 };
 
 const returnImageForm = () => {
-  for (let i = photoPreview.children.length - 1; i >= 0; i--) {
-    const photo = photoPreview.children[i];
-
-    photo.parentElement.removeChild(photo);
-  }
+  photoPreview.innerHTML = '';
 }
+
 
 
 previewUploadImage(avatarChooser, avatarPreview);
