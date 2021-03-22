@@ -16,13 +16,6 @@ const getRandomElemets = (array, min = 1) => {
 };
 
 
-const nodeToHtml = (element) => {
-  const wrapper = document.createElement('div');
-  wrapper.appendChild(element);
-
-  return wrapper;
-};
-
 const htmlToNode = (element) => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = element;
@@ -42,4 +35,4 @@ const showAlert = (placeClass, widthAlert, message) => {
   }, 5000);
 };
 
-export { getRandomNumber, getRandomElemets, showAlert, nodeToHtml };
+export { getRandomNumber, getRandomElemets, showAlert };
