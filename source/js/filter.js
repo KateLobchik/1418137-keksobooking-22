@@ -3,6 +3,9 @@
 const SIMILAR_AD_COUNT = 10;
 const RERENDER_DELAY = 500;
 
+const MIN_PRICE = 10000;
+const MAX_PRICE = 50000;
+
 const filterForm = document.querySelector('.map__filters');
 const typeHouse = filterForm.querySelector('#housing-type');
 const price = filterForm.querySelector('#housing-price');
@@ -69,13 +72,13 @@ const onPriceClick = (functionRender) => {
   price.addEventListener('change', () => {
     switch (price.value) {
       case 'middle':
-        filters.price = ad => ad.offer.price >= 10000 && ad.offer.price <= 50000;
+        filters.price = ad => ad.offer.price >= MIN_PRICE && ad.offer.price <= MAX_PRICE;
         break;
       case 'low':
-        filters.price = ad => ad.offer.price < 10000;
+        filters.price = ad => ad.offer.price < MIN_PRICE;
         break;
       case 'high':
-        filters.price = ad => ad.offer.price > 50000;
+        filters.price = ad => ad.offer.price > MAX_PRICE;
         break;
 
       default:

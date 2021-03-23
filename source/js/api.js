@@ -6,12 +6,12 @@ import { showAlert } from './util.js';
 import { filterAds } from './filter.js';
 
 
-const ApiUrlForGetData = 'https://22.javascript.pages.academy/keksobooking/data';
-const ApiUrlForFormSubmit = 'https://22.javascript.pages.academy/keksobooking';
+const API_URL_FOR_GET_DATA = 'https://22.javascript.pages.academy/keksobooking/data';
+const API_URL_FOR_FORM_SUBMIT = 'https://22.javascript.pages.academy/keksobooking';
 
 
 const getData = onSuccess => {
-  fetch(ApiUrlForGetData)
+  fetch(API_URL_FOR_GET_DATA)
     .then(response => response.json())
     .then(ads => {
       onSuccess(ads);
@@ -30,7 +30,7 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     const formData = new FormData(evt.target);
 
     fetch(
-      ApiUrlForFormSubmit,
+      API_URL_FOR_FORM_SUBMIT,
       {
         method: 'POST',
         body: formData,
