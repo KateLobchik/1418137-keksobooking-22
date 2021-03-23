@@ -1,19 +1,24 @@
 import { adForm } from './form.js';
-import { messageOnSuccess, messageOnFail } from './message-when-submit.js';
-import { renderSimilarAd, disableFormFields, mapFilter } from './map.js';
+import { showMessageOnSuccess, showMessageOnFail } from './message-when-submit.js';
+import { renderSimilarAd, disableFormFields } from './map.js';
+import { filterForm } from './filter.js';
 import { showAlert } from './util.js';
 import { filterAds } from './filter.js';
 
 
+const ApiUrlForGetData = 'https://22.javascript.pages.academy/keksobooking/data';
+const ApiUrlForFormSubmit = 'https://22.javascript.pages.academy/keksobooking';
+
+
 const getData = onSuccess => {
-  fetch('https://22.javascript.pages.academy/keksobooking/data')
+  fetch(ApiUrlForGetData)
     .then(response => response.json())
     .then(ads => {
       onSuccess(ads);
     })
     .catch(() => {
       showAlert('.map__canvas', '100%', 'К сожалению, сервер не отвечает. Обновите страницу.');
-      disableFormFields(mapFilter, 'map__filters--disabled');
+      disableFormFields(filterForm, 'map__filters--disabled');
     });
 }
 
@@ -25,7 +30,7 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     const formData = new FormData(evt.target);
 
     fetch(
-      'https://22.javascript.pages.academy/keksobooking',
+      ApiUrlForFormSubmit,
       {
         method: 'POST',
         body: formData,
@@ -44,4 +49,4 @@ getData(ads => {
   filterAds(ads, renderSimilarAd);
 });
 
-setUserFormSubmit(messageOnSuccess, messageOnFail);
+setUserFormSubmit(showMessageOnSuccess, showMessageOnFail);

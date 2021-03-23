@@ -16,7 +16,7 @@ const getRandomElemets = (array, min = 1) => {
 };
 
 
-const htmlToNode = (element) => {
+const transformHtmlToNode = (element) => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = element;
   return wrapper.firstChild;
@@ -27,7 +27,7 @@ const showAlert = (placeClass, widthAlert, message) => {
   padding: 10px 3px; font-size: 30px; text-align: center;
   background-color: lightblue;">${message}</div>`;
 
-  const nodeAlertMessage = htmlToNode(alertMessage);
+  const nodeAlertMessage = transformHtmlToNode(alertMessage);
   document.querySelector(placeClass).append(nodeAlertMessage);
 
   setTimeout(() => {

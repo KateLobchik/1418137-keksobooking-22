@@ -1,14 +1,16 @@
 import { resetFormField } from './form.js';
 
+const mainBlock = document.querySelector('main');
+
 const isEscEvent = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
-const messageOnSuccess = () => {
+
+const showMessageOnSuccess = () => {
   const popupSuccessTemplate = document.querySelector('#success').content.cloneNode(true);
   const popupSuccess = document.createElement('div');
   popupSuccess.appendChild(popupSuccessTemplate);
-  const mainBlock = document.querySelector('main');
   mainBlock.appendChild(popupSuccess);
 
   const onPopupEscKeydown = (evt) => {
@@ -32,11 +34,10 @@ const messageOnSuccess = () => {
   });
 }
 
-const messageOnFail = () => {
+const showMessageOnFail = () => {
   const popupErrorTemplate = document.querySelector('#error').content.cloneNode(true);
   const popupError = document.createElement('div');
   popupError.appendChild(popupErrorTemplate);
-  const mainBlock = document.querySelector('main');
   mainBlock.appendChild(popupError);
 
   const buttonError = document.querySelector('.error__button');
@@ -65,4 +66,4 @@ const messageOnFail = () => {
 }
 
 
-export { messageOnSuccess, messageOnFail };
+export { showMessageOnSuccess, showMessageOnFail };

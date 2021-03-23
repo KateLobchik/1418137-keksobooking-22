@@ -2,6 +2,7 @@ const IMAGES_TYPES = ['jpg', 'jpeg', 'png'];
 
 const avatarChooser = document.querySelector('#avatar');
 const avatarPreview = document.querySelector('.ad-form-header__preview');
+const startAvatarPath = avatarPreview.children[0].src;
 
 const photoChooser = document.querySelector('#images');
 const photoPreview = document.querySelector('.ad-form__photo');
@@ -37,6 +38,7 @@ const previewUploadImage = (fileChooser, preview, altImage) => {
 
 const resetImageForm = () => {
   photoPreview.innerHTML = '';
+  avatarPreview.children[0].src = startAvatarPath;
 }
 
 

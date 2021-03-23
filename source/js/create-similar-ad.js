@@ -1,5 +1,6 @@
 const adTemplate = document.querySelector('#card');
 
+// Незачет Б1.3. Вот функция для проверки на неполные данные. Ниже (в createSimilarAd) она используется для каждого поля
 const addDataInTemplate = (classTemplateElement, data, adElementTemplate) => {
   const elementTemplate = adElementTemplate.querySelector(classTemplateElement);
   if (data === '') {
@@ -20,7 +21,7 @@ const renameRooms = data => {
 };
 
 const renameGuests = data => {
-  if (data % 10 === 1 && data != 11) {
+  if (data % 10 === 1 && data !== 11) {
     return data + ' гостя';
   }
   return data + ' гостей';
@@ -38,11 +39,11 @@ const showImages = (photos, adElementTemplate) => {
   const photoTemlate = adElementTemplate.querySelector('.popup__photo');
   photosList.removeChild(photoTemlate);
 
-  for (let i = 0; i < photos.length; i++) {
+  photos.forEach((_, i) => {
     const photo = photoTemlate.cloneNode();
     photo.src = photos[i];
     photosList.appendChild(photo);
-  }
+  });
 };
 
 const createSimilarAd = ad => {

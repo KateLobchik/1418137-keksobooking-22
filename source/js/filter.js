@@ -10,13 +10,7 @@ const numberRooms = filterForm.querySelector('#housing-rooms');
 const numberGuests = filterForm.querySelector('#housing-guests');
 
 const featuresFieldset = filterForm.querySelector('#housing-features');
-const filterWiFi = featuresFieldset.querySelector('#filter-wifi');
-const filterDishwasher = featuresFieldset.querySelector('#filter-dishwasher');
-const filterParking = featuresFieldset.querySelector('#filter-parking');
-const filterWasher = featuresFieldset.querySelector('#filter-washer');
-const filterElevator = featuresFieldset.querySelector('#filter-elevator');
-const filterConditioner = featuresFieldset.querySelector('#filter-conditioner');
-
+const featuresInputs = featuresFieldset.querySelectorAll('input');
 
 const debounceRender = button => {
   button(_.debounce(
@@ -33,76 +27,26 @@ const filters = {
   price: () => true,
   numberRooms: () => true,
   numberGuests: () => true,
-  featureWiFi: () => true,
-  featureDishwasher: () => true,
-  featureParking: () => true,
-  featureWasher: () => true,
-  featureElevator: () => true,
-  featureConditioner: () => true,
-};
-
-
-const getAdRank = ad => {
-  let rank = 0;
-
-  if (ad.offer.type === typeHouse.value) {
-    rank += 1;
-  }
-  if (ad.offer.price >= 10000 && ad.offer.price <= 50000 && typeHouse.value === 'middle') {
-    rank += 1;
-  }
-  if (ad.offer.price < 10000 && typeHouse.value === 'low') {
-    rank += 1;
-  }
-  if (ad.offer.price > 50000 && typeHouse.value === 'high') {
-    rank += 1;
-  }
-  if (ad.offer.rooms === +numberRooms.value) {
-    rank += 1;
-  }
-  if (ad.offer.guests === +numberGuests.value) {
-    rank += 1;
-  }
-  const rankcheckboxFilter = filterButton => {
-    if (ad.offer.features.includes(filterButton.value)) {
-      rank += 1;
-    }
-  };
-
-  rankcheckboxFilter(filterWiFi);
-  rankcheckboxFilter(filterDishwasher);
-  rankcheckboxFilter(filterParking);
-  rankcheckboxFilter(filterWasher);
-  rankcheckboxFilter(filterElevator);
-  rankcheckboxFilter(filterConditioner);
-
-  return rank;
-};
-
-const compareAds = (ad1, ad2) => {
-  const rank1 = getAdRank(ad1);
-  const rank2 = getAdRank(ad2);
-
-  return rank2 - rank1;
+  features: () => true,
 };
 
 
 const doFilter = () => {
-  const filteredAds = allAds.filter(oneAd => {
-    return filters.typeHouse(oneAd)
+  const filteredAds = [];
+
+  for (let oneAd of allAds) {
+
+    if (filteredAds.length === SIMILAR_AD_COUNT) {
+      break;
+    }
+    if (filters.typeHouse(oneAd)
       && filters.price(oneAd)
       && filters.numberRooms(oneAd)
       && filters.numberGuests(oneAd)
-      && filters.featureWiFi(oneAd)
-      && filters.featureDishwasher(oneAd)
-      && filters.featureParking(oneAd)
-      && filters.featureWasher(oneAd)
-      && filters.featureElevator(oneAd)
-      && filters.featureConditioner(oneAd);
-  })
-    .slice()
-    .sort(compareAds)
-    .slice(0, SIMILAR_AD_COUNT);
+      && filters.features(oneAd)) {
+      filteredAds.push(oneAd);
+    }
+  }
 
   render(filteredAds);
 };
@@ -170,26 +114,36 @@ const onGuestsClick = (functionRender) => {
 }
 debounceRender(onGuestsClick);
 
+
+const chosenFeatures = [];
+const isAdWithChosenFeatures = ad => {
+  if (chosenFeatures.length === 0) {
+    return true;
+  }
+  for (let chosenFeature of chosenFeatures) {
+    if (!ad.offer.features.includes(chosenFeature)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 const onFeaturesClick = (functionRender) => {
-  const checkboxFilter = (filterButton, feature) => {
-    filterButton.addEventListener('change', () => {
-      if (filterButton.checked) {
-        filters[feature] = ad => ad.offer.features.includes(filterButton.value);
+  for (let featuresInput of featuresInputs) {
+    featuresInput.addEventListener('change', () => {
+      filters.features = isAdWithChosenFeatures;
+
+      if (featuresInput.checked) {
+        chosenFeatures.push(featuresInput.value);
       } else {
-        filters[feature] = () => true;
+        const indexItem = chosenFeatures.indexOf(featuresInput.value);
+        chosenFeatures.splice(indexItem, 1);
       }
 
       functionRender();
-    });
-  };
-
-  checkboxFilter(filterWiFi, 'featureWiFi');
-  checkboxFilter(filterDishwasher, 'featureDishwasher');
-  checkboxFilter(filterParking, 'featureParking');
-  checkboxFilter(filterWasher, 'featureWasher');
-  checkboxFilter(filterElevator, 'featureElevator');
-  checkboxFilter(filterConditioner, 'featureConditioner');
-};
+    })
+  }
+}
 debounceRender(onFeaturesClick);
 
 
@@ -209,4 +163,4 @@ const resetFilter = () => {
 }
 
 
-export { filterAds, resetFilter };
+export { filterForm, filterAds, resetFilter };

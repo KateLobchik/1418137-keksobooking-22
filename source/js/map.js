@@ -1,23 +1,47 @@
 /* global L:readonly */
 
 import { createSimilarAd } from './create-similar-ad.js';
+import { filterForm } from './filter.js';
+
+
 
 const disableFormFields = (form, disabledClass) => {
   form.classList.add(disabledClass);
-  for (let i = 0; i < form.children.length; i++) {
-    form.children[i].setAttribute('disabled', 'disabled');
+
+  // Не использовала forEach, т.к. этот метод не работает на коллекциях HTML (.children)
+  for (let child of form.children) {
+    child.setAttribute('disabled', 'disabled');
   }
-}
+};
 
 const activateFormFields = (form, disabledClass) => {
   form.classList.remove(disabledClass);
-  for (let i = 0; i < form.children.length; i++) {
-    form.children[i].removeAttribute('disabled');
+  for (let child of form.children) {
+    child.removeAttribute('disabled');
   }
-}
+};
+
 
 const adForm = document.querySelector('.ad-form');
-const mapFilter = document.querySelector('.map__filters');
+const mapFilter = filterForm;
+
+const mapCenterCoordinates = { lat: 35.6895, lng: 139.69171 };
+const startCoordinatesMainMarker = mapCenterCoordinates;
+
+const optionsMainMarker = {
+  size: [40, 40],
+  anchor: [20, 40],
+  shadowSize: [35, 35],
+  shadowAnchor: [10, 35],
+};
+const markerOptions = {
+  size: [30, 30],
+  anchor: [15, 30],
+  shadowSize: [30, 30],
+  shadowAnchor: [8, 30],
+};
+
+
 
 disableFormFields(adForm, 'ad-form--disabled');
 disableFormFields(mapFilter, 'map__filters--disabled');
@@ -28,10 +52,7 @@ const map = L.map('map-canvas')
     activateFormFields(adForm, 'ad-form--disabled');
     activateFormFields(mapFilter, 'map__filters--disabled');
   })
-  .setView({
-    lat: 35.6895,
-    lng: 139.69171,
-  }, 10);
+  .setView(mapCenterCoordinates, 10);
 
 
 L.tileLayer(
@@ -44,18 +65,15 @@ L.tileLayer(
 
 const mainIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: optionsMainMarker.size,
+  iconAnchor: optionsMainMarker.anchor,
   shadowUrl: 'leaflet/images/marker-shadow.png',
-  shadowSize: [35, 35],
-  shadowAnchor: [10, 35],
+  shadowSize: optionsMainMarker.shadowSize,
+  shadowAnchor: optionsMainMarker.shadowAnchor,
 });
 
 const mainMarker = L.marker(
-  {
-    lat: 35.6895,
-    lng: 139.69171,
-  },
+  startCoordinatesMainMarker,
   {
     draggable: true,
     icon: mainIcon,
@@ -66,13 +84,12 @@ mainMarker.addTo(map);
 
 const icon = L.icon({
   iconUrl: 'img/pin.svg',
-  iconSize: [30, 30],
-  iconAnchor: [15, 30],
+  iconSize: markerOptions.size,
+  iconAnchor: markerOptions.anchor,
   shadowUrl: 'leaflet/images/marker-shadow.png',
-  shadowSize: [30, 30],
-  shadowAnchor: [8, 30],
+  shadowSize: markerOptions.shadowSize,
+  shadowAnchor: markerOptions.shadowAnchor,
 });
-
 
 
 const allMarkers = [];
@@ -112,4 +129,4 @@ const renderSimilarAd = (similarAds) => {
 };
 
 
-export { renderSimilarAd, disableFormFields, mapFilter, mainMarker };
+export { renderSimilarAd, disableFormFields, mainMarker };
